@@ -1,6 +1,6 @@
 import unittest
 from textnode import TextNode, TextType
-from inline_markdown import split_nodes_delimiter
+from inline_markdown import split_nodes_delimiter, extract_markdown_images, extract_markdown_links
 
 class TestSplitNode(unittest.TestCase):
     def test_split_code(self):
@@ -45,3 +45,21 @@ class TestSplitNode(unittest.TestCase):
         with self.assertRaises(Exception):
             node = TextNode("This has a `code phrase inside", TextType.TEXT)
             split_nodes_delimiter([node], "`", TextType.CODE)
+    
+    def test_extract_markdown_images(self):
+        matches = extract_markdown_images(
+            "This is text with an ![image](https://i.imgur.com/zjjcJKZ.png)"
+        )
+        self.assertListEqual([("image", "https://i.imgur.com/zjjcJKZ.png")], matches)
+
+    def test_extract_markdown_links(self):
+        matches = extract_markdown_links(
+            "Some text with a [link](https://www.example.com) and maybe another [here](https://www.another.com)"
+        )
+        self.assertListEqual(
+        [
+            ("link", "https://www.example.com"),
+            ("here", "https://www.another.com")
+        ],
+        matches
+    )
