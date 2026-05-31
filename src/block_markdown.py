@@ -8,7 +8,6 @@ class BlockType(Enum):
     UNORDERED_LIST = "unordered_list"
     ORDERED_LIST = "ordered_list"
 
-
 def block_to_block_type(block):
     split_block = block.split("\n")
     if split_block[0].startswith(("# ", "## ", "### ", "#### ", "##### ", "###### ")):
